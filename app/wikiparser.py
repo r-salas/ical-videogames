@@ -18,7 +18,7 @@ from .data import Game, GameReleaseDate, Platform
 WIKI_BY_PLATFORM = {
     Platform.PS5: "https://en.wikipedia.org/wiki/List_of_PlayStation_5_games",
     Platform.PS4: "https://en.wikipedia.org/wiki/List_of_PlayStation_4_games",
-    Platform.NINTENDO_SWITCH: "https://en.wikipedia.org/wiki/List_of_Nintendo_Switch_games",
+    Platform.NINTENDO_SWITCH: "https://en.wikipedia.org/wiki/List_of_Nintendo_Switch_games_(A–F)",
     Platform.XBOX_ONE: "https://en.wikipedia.org/wiki/List_of_Xbox_One_games_(A–L)",
     Platform.XBOX_SERIES: "https://en.wikipedia.org/wiki/List_of_Xbox_Series_X_and_Series_S_games"
 }
