@@ -54,9 +54,13 @@ def calendar():
 
     for platform in platforms:
         fname = f"{platform.value}-{region}.pkl"
+        fpath = os.path.join(app.config["GAMES_DATA_DIR"], fname)
 
-        with open(os.path.join(app.config["GAMES_DATA_DIR"], fname), "rb") as fp:
-            games = pickle.load(fp)
+        if os.path.isfile(fpath):
+            with open(fpath, "rb") as fp:
+                games = pickle.load(fp)
+        else:
+            games = []
 
         for game in games:
             release_date = getattr(game.release_date, region)
