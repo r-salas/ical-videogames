@@ -6,6 +6,7 @@
 
 import os
 import pickle
+import shutil
 import tempfile
 import datetime
 
@@ -45,8 +46,6 @@ def update_game_releases():
         for region, tracked_games in tracked_games_by_region.items():
             fname = f"{platform.value}-{region}.pkl"
 
-            with tempfile.NamedTemporaryFile(mode="wb", delete=False) as temp:
+            with tempfile.NamedTemporaryFile(mode="wb") as temp, scheduler.app.app_context():
                 pickle.dump(tracked_games, temp)
-
-            with scheduler.app.app_context():
-                os.replace(temp.name, os.path.join(app.config["GAMES_DATA_DIR"], fname))
+                shutil.move(temp.name, os.path.join(app.config["GAMES_DATA_DIR"], fname))
