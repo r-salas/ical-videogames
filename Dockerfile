@@ -7,6 +7,8 @@ RUN useradd -m app
 USER app
 WORKDIR /home/app
 
+ENV PORT 5000
+
 ENV PATH="/home/app/.local/bin:${PATH}"
 
 COPY --chown=app:app Pipfile* ./
@@ -17,4 +19,4 @@ RUN pip install pipenv==2018.11.26 --user && \
 
 COPY app ./app
 
-CMD ["gunicorn", "--bind", "0.0.0.0:${PORT:-5000}", "app:create_app()"]
+CMD ["gunicorn", "--bind", "0.0.0.0:${PORT}", "app:create_app()"]
