@@ -13,7 +13,7 @@ from .utils import is_flask_debug_mode, is_werkzeug_reloader_process
 
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder="templates", static_folder="static", static_url_path="/static")
 
     app.config.from_object(Config)
 
@@ -27,9 +27,10 @@ def create_app():
         else:
             from . import tasks
 
-            print("Populating game releases. This may take a while ...")
-            tasks.update_game_releases()
-            print("Game releases populated. All set ...")
+            if app.config["POPULATE_ON_STARTUP"]:
+                print("Populating game releases. This may take a while ...")
+                tasks.update_game_releases()
+                print("Game releases populated. All set ...")
 
             scheduler.start()
 

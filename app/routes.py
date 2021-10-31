@@ -10,8 +10,7 @@ import pickle
 from .data import Platform
 
 from ics import Calendar, Event
-from flask import Blueprint, request, Response
-from flask import current_app as app
+from flask import Blueprint, request, Response, render_template, current_app as app
 
 
 def _parse_region(region):
@@ -39,6 +38,11 @@ def _platform_to_readable(platform):
 
 
 blueprint = Blueprint("index", __name__)
+
+
+@blueprint.route("/")
+def index():
+    return render_template("index.html")
 
 
 @blueprint.route("/calendar")
