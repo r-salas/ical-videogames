@@ -19,6 +19,8 @@ from .wikiparser import iterate_games
 
 @scheduler.task("interval", id="fetch-game-releases", hours=24)
 def update_game_releases():
+    print("Populating game releases. This may take a while ...")
+
     with scheduler.app.app_context():
         os.makedirs(app.config["GAMES_DATA_DIR"], exist_ok=True)
 
@@ -49,3 +51,5 @@ def update_game_releases():
             with tempfile.NamedTemporaryFile(mode="wb", suffix=".pkl") as temp, scheduler.app.app_context():
                 pickle.dump(tracked_games, temp)
                 shutil.copy2(temp.name, os.path.join(app.config["GAMES_DATA_DIR"], fname))
+
+    print("Game releases populated. All set ...")

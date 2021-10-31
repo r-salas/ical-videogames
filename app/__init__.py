@@ -4,6 +4,8 @@
 #
 #
 
+import datetime
+
 from flask import Flask
 
 from . import routes
@@ -28,9 +30,8 @@ def create_app():
             from . import tasks
 
             if app.config["POPULATE_ON_STARTUP"]:
-                print("Populating game releases. This may take a while ...")
-                tasks.update_game_releases()
-                print("Game releases populated. All set ...")
+                for job in scheduler.get_jobs():
+                    job.modify(next_run_time=datetime.datetime.now())
 
             scheduler.start()
 
