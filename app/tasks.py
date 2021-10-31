@@ -46,6 +46,6 @@ def update_game_releases():
         for region, tracked_games in tracked_games_by_region.items():
             fname = f"{platform.value}-{region}.pkl"
 
-            with tempfile.NamedTemporaryFile(mode="wb") as temp, scheduler.app.app_context():
+            with tempfile.NamedTemporaryFile(mode="wb", suffix=".pkl") as temp, scheduler.app.app_context():
                 pickle.dump(tracked_games, temp)
-                shutil.move(temp.name, os.path.join(app.config["GAMES_DATA_DIR"], fname))
+                shutil.copy2(temp.name, os.path.join(app.config["GAMES_DATA_DIR"], fname))
