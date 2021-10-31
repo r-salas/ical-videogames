@@ -17,4 +17,4 @@ RUN pip install pipenv==2018.11.26 --user && \
 
 COPY app ./app
 
-CMD ["gunicorn", "--bind", "0.0.0.0:{PORT:-5000}", "app:create_app()"]
+CMD ["gunicorn", "--bind", "0.0.0.0:${PORT:-5000}", "app:create_app()"]
