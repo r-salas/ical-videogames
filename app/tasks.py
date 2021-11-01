@@ -26,7 +26,7 @@ def update_game_releases():
 
     today = datetime.datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
     min_date = today - datetime.timedelta(days=60)
-    max_date = today + datetime.timedelta(days=60)
+    max_date = today + datetime.timedelta(days=120)
 
     for platform in Platform:
         tracked_games_by_region = {
