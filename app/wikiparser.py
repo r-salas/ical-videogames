@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 from typing import Iterable, Iterator
 
-from .utils import safe_strptime
+from .utils import safe_parse_datetime
 from .data import Game, GameReleaseDate, Platform
 
 
@@ -54,9 +54,9 @@ def wiki_row_to_game(row: bs4.element.Tag, platform: Platform) -> Game:
         publisher=get_text(columns[3]),
         platform=platform,
         release_date=GameReleaseDate(
-            jp=safe_strptime(get_text(columns[4]), '%b %d, %Y'),
-            na=safe_strptime(get_text(columns[5]), '%b %d, %Y'),
-            pal=safe_strptime(get_text(columns[6]), '%b %d, %Y')
+            jp=safe_parse_datetime(get_text(columns[4])),
+            na=safe_parse_datetime(get_text(columns[5])),
+            pal=safe_parse_datetime(get_text(columns[6]))
         )
     )
 
@@ -87,4 +87,3 @@ def iterate_games(platforms: Iterable[Platform]):
 
                 for row in iterate_wiki_rows(soup):
                     yield wiki_row_to_game(row, platform)
-

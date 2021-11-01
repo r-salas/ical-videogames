@@ -6,15 +6,16 @@
 
 import os
 import datetime
+import dateutil.parser
 
 from typing import Optional
 
 
-def safe_strptime(s, pattern) -> Optional[datetime.datetime]:
+def safe_parse_datetime(s) -> Optional[datetime.datetime]:
     """Returns None if strptime fails"""
     try:
-        return datetime.datetime.strptime(s, pattern)
-    except ValueError:
+        return dateutil.parser.parse(s)
+    except dateutil.parser.ParserError:
         return None
 
 

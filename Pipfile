@@ -9,6 +9,7 @@ requests = "*"
 beautifulsoup4 = "*"
 flask = "*"
 flask-apscheduler = "*"
+python-dateutil = "*"
 
 [dev-packages]
 

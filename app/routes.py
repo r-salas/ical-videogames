@@ -56,10 +56,11 @@ def calendar():
         fname = f"{platform.value}-{region}.pkl"
         fpath = os.path.join(app.config["GAMES_DATA_DIR"], fname)
 
-        if os.path.isfile(fpath):
+        try:
             with open(fpath, "rb") as fp:
                 games = pickle.load(fp)
-        else:
+        except Exception as e:
+            app.logger.exception(f"Error loading {fpath}")
             games = []
 
         for game in games:
