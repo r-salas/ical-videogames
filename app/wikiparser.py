@@ -11,8 +11,8 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 from typing import Iterable, Iterator
 
-from .utils import safe_parse_datetime
 from .data import Game, GameReleaseDate, Platform
+from .utils import safe_strptime, replace_short_month
 
 
 WIKI_BY_PLATFORM = {
@@ -54,9 +54,9 @@ def wiki_row_to_game(row: bs4.element.Tag, platform: Platform) -> Game:
         publisher=get_text(columns[3]),
         platform=platform,
         release_date=GameReleaseDate(
-            jp=safe_parse_datetime(get_text(columns[4])),
-            na=safe_parse_datetime(get_text(columns[5])),
-            pal=safe_parse_datetime(get_text(columns[6]))
+            jp=safe_strptime(replace_short_month(get_text(columns[4])), '%B %d, %Y'),
+            na=safe_strptime(replace_short_month(get_text(columns[5])), '%B %d, %Y'),
+            pal=safe_strptime(replace_short_month(get_text(columns[6])), '%B %d, %Y')
         )
     )
 
@@ -78,7 +78,7 @@ def iterate_games(platforms: Iterable[Platform]):
         toc = main_wiki_soup.find(id="toc")
 
         if toc is not None:
-            other_wikis = [link["href"] for link in toc.find_all("a", href=True) if not link["href"].startswith("#")]
+            other_wikis = [link["href"] for link in toc.find_all("a", href=True) if "#" not in link["href"]]
 
             for wiki_path in other_wikis:
                 full_url = urljoin(main_wiki_url, wiki_path)

@@ -6,17 +6,39 @@
 
 import os
 import datetime
-import dateutil.parser
 
 from typing import Optional
 
 
-def safe_parse_datetime(s) -> Optional[datetime.datetime]:
+def safe_strptime(s, pattern) -> Optional[datetime.datetime]:
     """Returns None if strptime fails"""
     try:
-        return dateutil.parser.parse(s)
-    except dateutil.parser.ParserError:
+        return datetime.datetime.strptime(s, pattern)
+    except ValueError:
         return None
+
+
+def replace_short_month(s):
+    month_dict = {
+        "Jan ": "January ",
+        "Feb ": "February ",
+        "Mar ": "March ",
+        "Apr ": "April ",
+        "May ": "May ",
+        "Jun ": "June ",
+        "Jul ": "July ",
+        "Aug ": "August ",
+        "Sep ": "September ",
+        "Sept ": "September ",
+        "Oct ": "October ",
+        "Nov ": "November ",
+        "Dec ": "December "
+    }
+
+    for short_month, long_month in month_dict.items():
+        s = s.replace(short_month, long_month)
+
+    return s
 
 
 def is_flask_debug_mode():
