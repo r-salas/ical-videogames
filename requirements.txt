@@ -1,0 +1,6 @@
+ics
+requests
+beautifulsoup4
+flask
+flask-apscheduler
+python-dateutil

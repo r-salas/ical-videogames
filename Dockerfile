@@ -1,4 +1,4 @@
-FROM python:3.7-slim
+FROM python:3.8-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
@@ -11,10 +11,9 @@ ENV PORT 5000
 
 ENV PATH="/home/app/.local/bin:${PATH}"
 
-COPY --chown=app:app Pipfile* ./
+COPY --chown=app:app requirements.txt .
 
-RUN pip install pipenv==2018.11.26 --user && \
-    pipenv install --system --deploy && \
+RUN pip install -r requirements.txt && \
     pip install gunicorn --user
 
 COPY app ./app
