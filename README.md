@@ -1,8 +1,22 @@
 # iCal video games
 Track upcoming video game release dates directly in your calendar.
 
-First, choose platforms/region and copy the URL. Click [here](https://ical-videogames.herokuapp.com) to open the web.
+## Installation
+Build dockerfile
+```console
+$ docker build -t ical-videogames
+```
+Run dockerfile
+```console
+$ docker run -d -p 5000:5000 ical-videogames
+```
+
+## Usage
+
+1. Open [http://localhost:5000](http://localhost:5000)
+
+2. Choose platforms/region and copy the URL.
 ![Web platform](media/web.png)
 
-Now, add URL to your calendar:
+3. Add URL to your calendar:
 ![Calendar](media/calendar.png)
