@@ -4,7 +4,7 @@ Track upcoming video game release dates directly in your calendar.
 ## Installation
 Build dockerfile
 ```console
-$ docker build -t ical-videogames
+$ docker build -t ical-videogames .
 ```
 Run dockerfile
 ```console
