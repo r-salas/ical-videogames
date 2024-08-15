@@ -18,7 +18,7 @@ from .utils import safe_strptime, replace_short_month
 WIKI_BY_PLATFORM = {
     Platform.PS5: "https://en.wikipedia.org/wiki/List_of_PlayStation_5_games",
     Platform.PS4: "https://en.wikipedia.org/wiki/List_of_PlayStation_4_games_(A–L)",
-    Platform.NINTENDO_SWITCH: "https://en.wikipedia.org/wiki/List_of_Nintendo_Switch_games_(0–9_and_A)",
+    Platform.NINTENDO_SWITCH: "https://en.wikipedia.org/wiki/List_of_Nintendo_Switch_games_(0–A)",
     Platform.XBOX_ONE: "https://en.wikipedia.org/wiki/List_of_Xbox_One_games_(A–L)",
     Platform.XBOX_SERIES: "https://en.wikipedia.org/wiki/List_of_Xbox_Series_X_and_Series_S_games"
 }
@@ -48,18 +48,26 @@ def wiki_row_to_game(row: bs4.element.Tag, platform: Platform) -> Game:
     columns = row.select("tr > *")
 
     if platform == Platform.NINTENDO_SWITCH:
-        date = safe_strptime(replace_short_month(get_text(columns[4])), '%B %d, %Y')
+        date = safe_strptime(replace_short_month(get_text(columns[3])), '%B %d, %Y')
         jp_date, na_date, pal_date = [date] * 3
+        title = get_text(columns[0])
+        genre = None
+        developer = get_text(columns[1])
+        publisher = get_text(columns[2])
     else:
         jp_date = safe_strptime(replace_short_month(get_text(columns[4])), '%B %d, %Y')
         na_date = safe_strptime(replace_short_month(get_text(columns[5])), '%B %d, %Y')
         pal_date = safe_strptime(replace_short_month(get_text(columns[6])), '%B %d, %Y')
+        title = get_text(columns[0])
+        genre = get_text(columns[1])
+        developer = get_text(columns[2])
+        publisher = get_text(columns[3])
 
     return Game(
-        title=get_text(columns[0]),
-        genre=get_text(columns[1]),
-        developer=get_text(columns[2]),
-        publisher=get_text(columns[3]),
+        title=title,
+        genre=genre,
+        developer=developer,
+        publisher=publisher,
         platform=platform,
         release_date=GameReleaseDate(
             jp=jp_date,

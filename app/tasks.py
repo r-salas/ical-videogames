@@ -52,8 +52,9 @@ def update_game_releases(data_dir: Optional[str] = None):
         for region, tracked_games in tracked_games_by_region.items():
             fname = f"{platform.value}-{region}.pkl"
 
-            with tempfile.NamedTemporaryFile(mode="wb", suffix=".pkl") as temp:
-                pickle.dump(tracked_games, temp)
-                shutil.copy2(temp.name, os.path.join(data_dir, fname))
+            print(platform, region, len(tracked_games))
+
+            with open(os.path.join(data_dir, fname), "wb") as fp:
+                pickle.dump(tracked_games, fp)
 
     print("Game releases populated. All set ...")
