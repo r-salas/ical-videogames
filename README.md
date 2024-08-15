@@ -20,3 +20,8 @@ $ docker run -d -p 5000:5000 ical-videogames
 
 3. Add URL to your calendar:
 ![Calendar](media/calendar.png)
+
+## Development
+```console
+$ flask run --reload --debug
+```

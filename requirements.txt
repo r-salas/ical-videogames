@@ -1,6 +1,7 @@
-ics
-requests
-beautifulsoup4
-flask
-flask-apscheduler
-python-dateutil
+ics~=0.7.2
+requests~=2.32.3
+beautifulsoup4~=4.12.3
+Flask~=3.0.3
+Flask-APScheduler~=1.13.1
+python-dateutil~=2.9.0
+typer~=0.12.3

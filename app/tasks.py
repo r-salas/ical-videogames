@@ -9,6 +9,7 @@ import pickle
 import shutil
 import tempfile
 import datetime
+from typing import Optional
 
 from flask import current_app as app
 
@@ -18,11 +19,14 @@ from .wikiparser import iterate_games
 
 
 @scheduler.task("interval", id="fetch-game-releases", hours=24)
-def update_game_releases():
+def update_game_releases(data_dir: Optional[str] = None):
     print("Populating game releases. This may take a while ...")
 
-    with scheduler.app.app_context():
-        os.makedirs(app.config["GAMES_DATA_DIR"], exist_ok=True)
+    if data_dir is None:
+        with scheduler.app.app_context():
+            data_dir = app.config["GAMES_DATA_DIR"]
+
+    os.makedirs(data_dir, exist_ok=True)
 
     today = datetime.datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
     min_date = today - datetime.timedelta(days=60)
@@ -48,8 +52,8 @@ def update_game_releases():
         for region, tracked_games in tracked_games_by_region.items():
             fname = f"{platform.value}-{region}.pkl"
 
-            with tempfile.NamedTemporaryFile(mode="wb", suffix=".pkl") as temp, scheduler.app.app_context():
+            with tempfile.NamedTemporaryFile(mode="wb", suffix=".pkl") as temp:
                 pickle.dump(tracked_games, temp)
-                shutil.copy2(temp.name, os.path.join(app.config["GAMES_DATA_DIR"], fname))
+                shutil.copy2(temp.name, os.path.join(data_dir, fname))
 
     print("Game releases populated. All set ...")
