@@ -29,8 +29,8 @@ def update_game_releases(data_dir: Optional[str] = None):
     os.makedirs(data_dir, exist_ok=True)
 
     today = datetime.datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
-    min_date = today - datetime.timedelta(days=60)
-    max_date = today + datetime.timedelta(days=120)
+    min_date = (today - datetime.timedelta(days=60)).date()
+    max_date = (today + datetime.timedelta(days=120)).date()
 
     for platform in Platform:
         tracked_games_by_region = {

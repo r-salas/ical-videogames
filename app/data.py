@@ -19,15 +19,15 @@ class Platform(Enum):
     XBOX_SERIES = "xbox_series"
 
 
-@dataclass
+@dataclass(frozen=True, eq=True)
 class GameReleaseDate:
 
-    jp: Optional[datetime.datetime]   # Japan
-    na: Optional[datetime.datetime]   # North America
-    pal: Optional[datetime.datetime]  # Europe and Australasia
+    jp: Optional[datetime.date]   # Japan
+    na: Optional[datetime.date]   # North America
+    pal: Optional[datetime.date]  # Europe and Australasia
 
 
-@dataclass
+@dataclass(frozen=True, eq=True)
 class Game:
 
     title: str

@@ -48,16 +48,16 @@ def wiki_row_to_game(row: bs4.element.Tag, platform: Platform) -> Game:
     columns = row.select("tr > *")
 
     if platform == Platform.NINTENDO_SWITCH:
-        date = safe_strptime(replace_short_month(get_text(columns[3])), '%B %d, %Y')
+        date = safe_strptime(replace_short_month(get_text(columns[3])), '%B %d, %Y', date=True)
         jp_date, na_date, pal_date = [date] * 3
         title = get_text(columns[0])
         genre = None
         developer = get_text(columns[1])
         publisher = get_text(columns[2])
     else:
-        jp_date = safe_strptime(replace_short_month(get_text(columns[4])), '%B %d, %Y')
-        na_date = safe_strptime(replace_short_month(get_text(columns[5])), '%B %d, %Y')
-        pal_date = safe_strptime(replace_short_month(get_text(columns[6])), '%B %d, %Y')
+        jp_date = safe_strptime(replace_short_month(get_text(columns[4])), '%B %d, %Y', date=True)
+        na_date = safe_strptime(replace_short_month(get_text(columns[5])), '%B %d, %Y', date=True)
+        pal_date = safe_strptime(replace_short_month(get_text(columns[6])), '%B %d, %Y', date=True)
         title = get_text(columns[0])
         genre = get_text(columns[1])
         developer = get_text(columns[2])
@@ -88,13 +88,16 @@ def iterate_games(platforms: Iterable[Platform]):
 
         main_wiki_soup = url_to_soup(main_wiki_url)
 
+        platform_games = set()
+
         for row in iterate_wiki_rows(main_wiki_soup):
-            yield wiki_row_to_game(row, platform)
+            game = wiki_row_to_game(row, platform)
+            platform_games.add(game)
 
         toc = main_wiki_soup.find(id="toc")
 
         if toc is not None:
-            other_wikis = [link["href"] for link in toc.find_all("a", href=True) if "#" not in link["href"]]
+            other_wikis = [link["href"] for link in toc.find_all("a", href=True) if not link["href"].startswith("#")]
 
             for wiki_path in other_wikis:
                 full_url = urljoin(main_wiki_url, wiki_path)
@@ -102,4 +105,8 @@ def iterate_games(platforms: Iterable[Platform]):
                 soup = url_to_soup(full_url)
 
                 for row in iterate_wiki_rows(soup):
-                    yield wiki_row_to_game(row, platform)
+                    game = wiki_row_to_game(row, platform)
+                    platform_games.add(game)
+
+        for game in platform_games:
+            yield game

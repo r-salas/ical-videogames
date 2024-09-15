@@ -7,13 +7,16 @@
 import os
 import datetime
 
-from typing import Optional
+from typing import Optional, Union
 
 
-def safe_strptime(s, pattern) -> Optional[datetime.datetime]:
+def safe_strptime(s, pattern, date: bool = False) -> Optional[Union[datetime.datetime, datetime.date]]:
     """Returns None if strptime fails"""
     try:
-        return datetime.datetime.strptime(s, pattern)
+        datetime_val = datetime.datetime.strptime(s, pattern)
+        if date:
+            return datetime_val.date()
+        return datetime_val
     except ValueError:
         return None
 
