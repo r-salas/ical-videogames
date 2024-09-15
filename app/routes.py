@@ -45,6 +45,11 @@ def index():
     return render_template("index.html")
 
 
+@blueprint.route("/ping")
+def ping():
+    return "pong"
+
+
 @blueprint.route("/calendar")
 def calendar():
     platforms = request.args.getlist("platform", type=_parse_platform)
