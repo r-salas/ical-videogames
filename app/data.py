@@ -12,9 +12,11 @@ from dataclasses import dataclass
 
 
 class Platform(Enum):
+    PC = "pc"
     PS5 = "ps5"
     PS4 = "ps4"
     NINTENDO_SWITCH = "switch"
+    NINTENDO_SWITCH_2 = "switch_2"
     XBOX_ONE = "xbox_one"
     XBOX_SERIES = "xbox_series"
 

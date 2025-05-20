@@ -29,10 +29,12 @@ def _parse_platform(label):
 def _platform_to_readable(platform):
     mapper = {
         Platform.PS5: "PS5",
+        Platform.PC: "PC",
         Platform.PS4: "PS4",
         Platform.NINTENDO_SWITCH: "Nintendo Switch",
+        Platform.NINTENDO_SWITCH_2: "Nintendo Switch 2",
         Platform.XBOX_ONE: "Xbox One",
-        Platform.XBOX_SERIES: "Xbox Series X"
+        Platform.XBOX_SERIES: "Xbox Series X",
     }
     return mapper[platform]
 
