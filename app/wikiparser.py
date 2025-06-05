@@ -20,7 +20,8 @@ WIKI_BY_PLATFORM = {
     Platform.PS4: "https://en.wikipedia.org/wiki/List_of_PlayStation_4_games_(A–L)",
     Platform.NINTENDO_SWITCH: "https://en.wikipedia.org/wiki/List_of_Nintendo_Switch_games_(0–A)",
     Platform.XBOX_ONE: "https://en.wikipedia.org/wiki/List_of_Xbox_One_games_(A–L)",
-    Platform.XBOX_SERIES: "https://en.wikipedia.org/wiki/List_of_Xbox_Series_X_and_Series_S_games"
+    Platform.XBOX_SERIES: "https://en.wikipedia.org/wiki/List_of_Xbox_Series_X_and_Series_S_games",
+    Platform.NINTENDO_SWITCH_2: "https://en.wikipedia.org/wiki/List_of_Nintendo_Switch_2_games"
 }
 
 
@@ -47,7 +48,7 @@ def iterate_wiki_rows(soup: BeautifulSoup) -> Iterator[bs4.element.Tag]:
 def wiki_row_to_game(row: bs4.element.Tag, platform: Platform) -> Game:
     columns = row.select("tr > *")
 
-    if platform == Platform.NINTENDO_SWITCH:
+    if platform == Platform.NINTENDO_SWITCH or platform == Platform.NINTENDO_SWITCH_2:
         date = safe_strptime(replace_short_month(get_text(columns[3])), '%B %d, %Y', date=True)
         jp_date, na_date, pal_date = [date] * 3
         title = get_text(columns[0])

@@ -32,7 +32,8 @@ def _platform_to_readable(platform):
         Platform.PS4: "PS4",
         Platform.NINTENDO_SWITCH: "Nintendo Switch",
         Platform.XBOX_ONE: "Xbox One",
-        Platform.XBOX_SERIES: "Xbox Series X"
+        Platform.XBOX_SERIES: "Xbox Series X",
+        Platform.NINTENDO_SWITCH_2: "Nintendo Switch 2",
     }
     return mapper[platform]
 

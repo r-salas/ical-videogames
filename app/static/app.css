@@ -21,6 +21,12 @@ body {
     padding: 20px;
 }
 
+#calendar-platform-inputs {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
 #calendar-link {
     width: 100%;
     border: none;

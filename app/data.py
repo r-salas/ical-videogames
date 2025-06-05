@@ -17,6 +17,7 @@ class Platform(Enum):
     NINTENDO_SWITCH = "switch"
     XBOX_ONE = "xbox_one"
     XBOX_SERIES = "xbox_series"
+    NINTENDO_SWITCH_2 = "switch_2"
 
 
 @dataclass(frozen=True, eq=True)
