@@ -30,7 +30,12 @@ def get_text(tag: bs4.element.Tag) -> str:
 
 
 def url_to_soup(url: str) -> BeautifulSoup:
-    res = requests.get(url)
+    res = requests.get(
+        url=url,
+        headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"  # noqa: E501
+        }
+    )
     res.raise_for_status()
 
     return BeautifulSoup(res.text, features="html.parser")
