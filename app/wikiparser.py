@@ -121,9 +121,9 @@ def iterate_games(platforms: Iterable[Platform]):
                     game = wiki_row_to_game(row, platform)
                     platform_games.add(game)
 
-                time.sleep(30)   # Add delay to prevent blocking
+                time.sleep(5)   # Add delay to prevent blocking
 
         for game in platform_games:
             yield game
 
-        time.sleep(30)   # Add delay to prevent blocking
+        time.sleep(5)   # Add delay to prevent blocking
