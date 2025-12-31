@@ -18,7 +18,7 @@ from .utils import safe_strptime, replace_short_month
 WIKI_BY_PLATFORM = {
     Platform.PS5: "https://en.wikipedia.org/wiki/List_of_PlayStation_5_games",
     Platform.PS4: "https://en.wikipedia.org/wiki/List_of_PlayStation_4_games_(A–L)",
-    Platform.NINTENDO_SWITCH: "https://en.wikipedia.org/wiki/List_of_Nintendo_Switch_games_(0–A)",
+    Platform.NINTENDO_SWITCH: "https://en.wikipedia.org/wiki/List_of_Nintendo_Switch_games_(0–9)",
     Platform.XBOX_ONE: "https://en.wikipedia.org/wiki/List_of_Xbox_One_games_(A–L)",
     Platform.XBOX_SERIES: "https://en.wikipedia.org/wiki/List_of_Xbox_Series_X_and_Series_S_games",
     Platform.NINTENDO_SWITCH_2: "https://en.wikipedia.org/wiki/List_of_Nintendo_Switch_2_games"
@@ -54,12 +54,17 @@ def wiki_row_to_game(row: bs4.element.Tag, platform: Platform) -> Game:
     columns = row.select("tr > *")
 
     if platform == Platform.NINTENDO_SWITCH or platform == Platform.NINTENDO_SWITCH_2:
-        date = safe_strptime(replace_short_month(get_text(columns[3])), '%B %d, %Y', date=True)
-        jp_date, na_date, pal_date = [date] * 3
         title = get_text(columns[0])
         genre = None
         developer = get_text(columns[1])
         publisher = get_text(columns[2])
+
+        if title in ("Hades", "Hades II"):
+            # FIXME: for some reason, Hades are formatted differently on the wiki
+            jp_date, na_date, pal_date = [None] * 3
+        else:
+            date = safe_strptime(replace_short_month(get_text(columns[3])), '%B %d, %Y', date=True)
+            jp_date, na_date, pal_date = [date] * 3
     else:
         jp_date = safe_strptime(replace_short_month(get_text(columns[4])), '%B %d, %Y', date=True)
         na_date = safe_strptime(replace_short_month(get_text(columns[5])), '%B %d, %Y', date=True)
