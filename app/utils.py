@@ -55,3 +55,7 @@ def is_flask_debug_mode():
 def is_werkzeug_reloader_process():
     """Get werkzeug status."""
     return os.environ.get("WERKZEUG_RUN_MAIN") == "true"
+
+
+def strtobool(v):
+    return v.lower() in ("yes", "true", "t", "1")

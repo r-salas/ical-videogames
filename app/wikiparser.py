@@ -3,7 +3,7 @@
 #   Wiki games
 #
 #
-
+import os
 import time
 
 import bs4
@@ -14,7 +14,7 @@ from urllib.parse import urljoin
 from typing import Iterable, Iterator
 
 from .data import Game, GameReleaseDate, Platform
-from .utils import safe_strptime, replace_short_month
+from .utils import safe_strptime, replace_short_month, strtobool
 
 
 WIKI_BY_PLATFORM = {
@@ -32,15 +32,37 @@ def get_text(tag: bs4.element.Tag) -> str:
 
 
 def url_to_soup(url: str) -> BeautifulSoup:
-    res = requests.get(
-        url=url,
-        headers={
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"  # noqa: E501
-        }
-    )
-    res.raise_for_status()
+    simple_proxy_enabled = strtobool(os.environ.get("SIMPLE_PROXY_ENABLED", "false"))
 
-    return BeautifulSoup(res.text, features="html.parser")
+    if simple_proxy_enabled:
+        simple_proxy_domain = os.environ["SIMPLE_PROXY_DOMAIN"]
+        simple_proxy_token = os.environ.get("SIMPLE_PROXY_TOKEN", "")
+
+        res = requests.get(
+            url=f"{simple_proxy_domain}/proxy",
+            params={
+                "url": url,
+            },
+            headers={
+                "x-simple-proxy-token": simple_proxy_token,
+            }
+        )
+
+        res.raise_for_status()
+
+        webpage_html = res.text
+    else:
+        res = requests.get(
+            url=url,
+            headers={
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"  # noqa: E501
+            }
+        )
+        res.raise_for_status()
+
+        webpage_html = res.text
+
+    return BeautifulSoup(webpage_html, features="html.parser")
 
 
 def iterate_wiki_rows(soup: BeautifulSoup) -> Iterator[bs4.element.Tag]:
