@@ -74,8 +74,11 @@ def iterate_wiki_rows(soup: BeautifulSoup) -> Iterator[bs4.element.Tag]:
         yield row
 
 
-def wiki_row_to_game(row: bs4.element.Tag, platform: Platform) -> Game:
+def wiki_row_to_game(row: bs4.element.Tag, platform: Platform) -> Game | None:
     columns = row.select("tr > *")
+
+    if not columns:
+        return None
 
     if platform == Platform.NINTENDO_SWITCH or platform == Platform.NINTENDO_SWITCH_2:
         title = get_text(columns[0])
@@ -127,6 +130,10 @@ def iterate_games(platforms: Iterable[Platform]):
 
         for row in iterate_wiki_rows(main_wiki_soup):
             game = wiki_row_to_game(row, platform)
+
+            if game is None:
+                continue   # No game data could be extracted from this row, skip it
+
             platform_games.add(game)
 
         toc = main_wiki_soup.find(id="toc")
